@@ -677,7 +677,7 @@ Transform:
   m_GameObject: {fileID: 1584324792}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.366, y: 1.483, z: 0}
+  m_LocalPosition: {x: -2, y: 1.4, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -718,6 +718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+<<<<<<< HEAD
 <<<<<<< HEAD
 --- !u!1 &1597234329
 GameObject:
@@ -831,11 +832,16 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
 =======
+=======
+>>>>>>> 057534c491eb6e7a2de5372bc27be5358708ab90
   upButton: {fileID: 2080307930}
   downButton: {fileID: 576106166}
   leftButton: {fileID: 1292369200}
   rightButton: {fileID: 1343048350}
+<<<<<<< HEAD
 >>>>>>> 3ea5d38b904887eca5d32b46955e2123b65a5c80
+=======
+>>>>>>> 057534c491eb6e7a2de5372bc27be5358708ab90
 --- !u!1 &1974037665
 GameObject:
   m_ObjectHideFlags: 0

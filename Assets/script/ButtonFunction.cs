@@ -20,14 +20,19 @@ public class ButtonFunction : MonoBehaviour
         SceneManager.LoadScene("about");
     }
 
+    public void Storyline()
+    {
+        SceneManager.LoadScene("storyline");
+    }
+
+    public void Credits()
+    {
+        SceneManager.LoadScene("credits");
+    }
+
     public void Setting()
     {
         SceneManager.LoadScene("setting");
-    }
-
-    public void About2()
-    {
-        SceneManager.LoadScene("about2");
     }
 
     public void Scores()
