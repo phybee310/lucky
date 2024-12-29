@@ -203,7 +203,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1584324796}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: Start
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -335,7 +335,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1584324796}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: Start
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -467,7 +467,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1584324796}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: Start
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -998,7 +998,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1584324796}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: Start
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

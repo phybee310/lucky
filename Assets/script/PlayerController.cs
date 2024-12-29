@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
                                             //Used for the sprite animation when moving.
     }
 
-    public void Play()
+    public void Start()
     {
         upButton.onClick.AddListener(() => OnMoveInput(Vector2.up));
         downButton.onClick.AddListener(() => OnMoveInput(Vector2.down));
