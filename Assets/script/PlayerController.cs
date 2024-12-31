@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed; //To adjust character movement speed in the Inspector window.
-    private bool isMoving; //To identify whether the playable character is moving.
+    public float moveSpeed; // To adjust character movement speed in the Inspector window.
+    private bool isMoving; // To identify whether the playable character is moving.
     private Vector2 input;
     private Animator animator;
+    public LayerMask SolidObjectsLayer;
 
     public Button upButton;
     public Button downButton;
     public Button leftButton;
     public Button rightButton;
 
+    // Fixed movement boundaries
+    private readonly Vector2 minBounds = new Vector2(-22, -14);
+    private readonly Vector2 maxBounds = new Vector2(22, 14);
 
-    //Awake() is used to initialise variables or states before the game starts.
-    //In this case, it initialises the Animator variable.
     private void Awake()
     {
-        animator = GetComponent<Animator>();//Gets the generic animator component.
-                                            //Used for the sprite animation when moving.
+        animator = GetComponent<Animator>(); // Gets the generic animator component.
     }
 
     public void Start()
@@ -32,37 +32,35 @@ public class PlayerController : MonoBehaviour
         leftButton.onClick.AddListener(() => OnMoveInput(Vector2.left));
         rightButton.onClick.AddListener(() => OnMoveInput(Vector2.right));
     }
+
     public void Update()
     {
-        //If the character is not moving, it will be waiting and checking for inputs.
         if (!isMoving)
         {
-            input.x = Input.GetAxisRaw("Horizontal");//Horizontal movement is stored as input.x.
-            input.y = Input.GetAxisRaw("Vertical"); //Vertical movement is stored as input.y.
-                                                    //Value ranges from -1 to 1 because input is not smooth.
-                                                    //Horizontal axis is managed by the following keys: A, D, left arrow, right arrow.
-                                                    //Vertical axis is managed by the following keys: W, S, up arrow, down arrow.
-            Debug.Log("This is input.x:" + input.x); //This only appears in the console.
-            Debug.Log("This is input.y:" + input.y); //This only appears in the console.
-            if (input.x != 0) input.y = 0; //To prevent the character from moving diagonally.
-                                           //Can be removed if you want them to move diagonally.
-            if (input != Vector2.zero) //Vector2.zero is (0,0). If the input is any other key,
+            input.x = Input.GetAxisRaw("Horizontal"); // Horizontal movement is stored as input.x.
+            input.y = Input.GetAxisRaw("Vertical"); // Vertical movement is stored as input.y.
+
+            if (input.x != 0) input.y = 0; // Prevent diagonal movement.
+
+            if (input != Vector2.zero) // Check for movement input.
             {
                 animator.SetFloat("moveX", input.x);
                 animator.SetFloat("moveY", input.y);
-                var targetPos = transform.position; //transform.position can be found in the
-                                                    //Inspector window of the GameObject.
-                                                    //Rect Transform -> Position.
+
+                var targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
 
-                StartCoroutine(Move(targetPos));
+                // Check bounds and walkability before moving
+                if (isWithinBounds(targetPos) && isWalkable(targetPos))
+                {
+                    StartCoroutine(Move(targetPos));
+                }
             }
         }
         animator.SetBool("isMoving", isMoving);
     }
-    //Function for coroutine to move the player from one point to another point.
-    //Vector3 holds three values: X, Y, and Z.
+
     private void OnMoveInput(Vector2 direction)
     {
         if (!isMoving)
@@ -75,22 +73,32 @@ public class PlayerController : MonoBehaviour
             targetPos.x += input.x;
             targetPos.y += input.y;
 
-            StartCoroutine(Move(targetPos));
+            // Check bounds and walkability before moving
+            if (isWithinBounds(targetPos) && isWalkable(targetPos))
+            {
+                StartCoroutine(Move(targetPos));
+            }
         }
+        animator.SetBool("isMoving", isMoving);
+    }
+
+    private bool isWalkable(Vector3 targetPos)
+    {
+        return Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjectsLayer) == null;
+    }
+
+    private bool isWithinBounds(Vector3 targetPos)
+    {
+        return targetPos.x >= minBounds.x && targetPos.x <= maxBounds.x &&
+               targetPos.y >= minBounds.y && targetPos.y <= maxBounds.y;
     }
 
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
-        //If the target position minus the original move >0 , then an action will be taken.
-        //Epsilon is a tiny floating point value.
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            //Moves the object from its current position to the target position at the
-            //set movement speed.
-            //Time.deltaTime ensures that the frame rate remains the same regardless of the
-            //device's frame rate.
             yield return null;
         }
         transform.position = targetPos;

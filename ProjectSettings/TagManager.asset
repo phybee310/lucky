@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Item
+  - TrashCan
   layers:
   - Default
   - TransparentFX
@@ -11,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - SolidObjects
   - 
   - 
   - 
@@ -44,8 +46,14 @@ TagManager:
   - name: background
     uniqueID: 1770477089
     locked: 0
+  - name: collision
+    uniqueID: 869750951
+    locked: 0
   - name: character
     uniqueID: 135515901
+    locked: 0
+  - name: walk behind
+    uniqueID: 521392837
     locked: 0
   m_RenderingLayers:
   - Default

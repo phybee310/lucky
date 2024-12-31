@@ -25,12 +25,17 @@ public class ButtonFunction : MonoBehaviour
         SceneManager.LoadScene("setting");
     }
 
-    public void About2()
+    public void Storyline()
     {
-        SceneManager.LoadScene("about2");
+        SceneManager.LoadScene("storyline");
     }
 
-    public void Scores()
+    public void Credits()
+    {
+        SceneManager.LoadScene("credits");
+    }
+
+        public void Scores()
     {
         SceneManager.LoadScene("scores");
     }

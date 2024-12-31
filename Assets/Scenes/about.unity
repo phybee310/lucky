@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 160327487}
   - component: {fileID: 160327486}
   - component: {fileID: 160327485}
+  - component: {fileID: 160327488}
   m_Layer: 5
   m_Name: back
   m_TagString: Untagged
@@ -336,7 +337,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 160327486}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 160327488}
+        m_TargetAssemblyTypeName: ButtonFunction, Assembly-CSharp
+        m_MethodName: Setting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &160327486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +388,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160327483}
   m_CullTransparentMesh: 1
+--- !u!114 &160327488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160327483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6312758d0ab924bb6c59aa12e61417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &211490385
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +477,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -568,6 +593,7 @@ GameObject:
   - component: {fileID: 293930606}
   - component: {fileID: 293930605}
   - component: {fileID: 293930604}
+  - component: {fileID: 293930607}
   m_Layer: 5
   m_Name: storyline
   m_TagString: Untagged
@@ -637,7 +663,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 293930605}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 293930607}
+        m_TargetAssemblyTypeName: ButtonFunction, Assembly-CSharp
+        m_MethodName: Storyline
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &293930605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,6 +714,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293930602}
   m_CullTransparentMesh: 1
+--- !u!114 &293930607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293930602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6312758d0ab924bb6c59aa12e61417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +959,7 @@ GameObject:
   - component: {fileID: 1195340628}
   - component: {fileID: 1195340627}
   - component: {fileID: 1195340626}
+  - component: {fileID: 1195340629}
   m_Layer: 5
   m_Name: credit
   m_TagString: Untagged
@@ -978,7 +1029,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1195340627}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1195340629}
+        m_TargetAssemblyTypeName: ButtonFunction, Assembly-CSharp
+        m_MethodName: Credits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1195340627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,6 +1080,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195340624}
   m_CullTransparentMesh: 1
+--- !u!114 &1195340629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195340624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6312758d0ab924bb6c59aa12e61417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1200651840
 GameObject:
   m_ObjectHideFlags: 0
