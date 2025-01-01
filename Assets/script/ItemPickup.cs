@@ -58,7 +58,7 @@ public class ItemPickup : MonoBehaviour
             // Player clicks button to pick up an item
             PickUpItem();
         }
-        else if (trashCanToInteractWith != null && inventory.Count > 0)
+        else if (trashCanToInteractWith != null)
         {
             // Player clicks button to store item in trash can
             StoreItemInTrashCan();
@@ -101,6 +101,9 @@ public class ItemPickup : MonoBehaviour
                 // Deactivate item and reset the UI button
                 itemToStore.SetActive(false);
                 pickUpButton.interactable = false; // Disable button
+
+                pickUpButton.interactable = true;
+
             }
         }
     }

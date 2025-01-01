@@ -4,9 +4,11 @@ using System.Collections.Generic;
 public class TrashCan : MonoBehaviour
 {
     public enum TrashCanType { Red, Yellow, Green, Blue }
-    public TrashCanType trashCanType;  // Set in Inspector
+    public TrashCanType trashCanType; // Set in Inspector
 
-    public int totalScore = 0; // Total score based on correct/incorrect item placement
+    public static int globalScore = 0; // Total score from all trash cans
+    
+
 
     private readonly Dictionary<TrashCanType, List<string>> validItems = new Dictionary<TrashCanType, List<string>>
     {
@@ -34,17 +36,25 @@ public class TrashCan : MonoBehaviour
 
     public void StoreItem(Item item)
     {
+        if (item == null) return;
+
         string itemName = item.itemName;
 
-        if (validItems[trashCanType].Contains(itemName))  // Correct item for this trash can
+        if (validItems[trashCanType].Contains(itemName)) // Correct item for this trash can
         {
-            totalScore += itemScores[itemName];
-            Debug.Log($"{itemName} correctly placed in {trashCanType} trash can. Score: {totalScore}");
+            globalScore += itemScores[itemName];
+            Debug.Log($"{itemName} correctly placed in {trashCanType} trash can. Total global score: {globalScore}");
         }
-        else  // Incorrect item for this trash can
+        else // Incorrect item for this trash can
         {
-            totalScore += penaltyScores[itemName];
-            Debug.Log($"{itemName} incorrectly placed in {trashCanType} trash can. Score: {totalScore}");
+            globalScore += penaltyScores[itemName];
+            Debug.Log($"{itemName} incorrectly placed in {trashCanType} trash can. Total global score: {globalScore}");
         }
     }
+    public static void ResetScore()
+    {
+        globalScore = 0;  // Reset the global score to zero
+        Debug.Log("Global score reset to 0");
+    }
+
 }

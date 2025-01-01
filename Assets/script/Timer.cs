@@ -1,14 +1,17 @@
 using UnityEngine;
 using TMPro;
 
+
 public class CountdownTimer : MonoBehaviour
 {
-    public float startTime = 60f; // Set the countdown start time in seconds
+    public float startTime = 300f; // Set the countdown start time in seconds
     public TextMeshProUGUI timerText; // Reference to the TextMeshProUGUI component
     public GameObject gameOverPanel; // Reference to the Game Over panel
 
     private float currentTime;   // Keeps track of the remaining time
     private bool isTimerRunning; // Flag to control the timer
+
+    [SerializeField] private GameOverManager gameOverManager; // Reference to GameOverManager
 
     void Start()
     {
@@ -53,7 +56,12 @@ public class CountdownTimer : MonoBehaviour
 
         // Show the Game Over panel
         if (gameOverPanel != null)
-            gameOverPanel.SetActive(true);
-            Time.timeScale = 0;
+            gameOverPanel.SetActive(true); // Show the Game Over panel
+
+        // Call GameOverManager's method if the reference is set
+        if (gameOverManager != null)
+        {
+            gameOverManager.ShowGameOverPanel(); // This will show the Game Over panel through GameOverManager
+        }
     }
 }
