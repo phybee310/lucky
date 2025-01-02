@@ -33,6 +33,7 @@ public class ItemPickup : MonoBehaviour
                 pickUpButton.interactable = true; // Enable button to interact with trash can
             }
         }
+       
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -41,21 +42,22 @@ public class ItemPickup : MonoBehaviour
         {
             // Clear item reference when player leaves item range
             itemToPickUp = null;
-            pickUpButton.interactable = false; // Disable button
+            ResetPickUpButton(); // Disable button
         }
         else if (other.CompareTag("TrashCan"))
         {
             // Clear trash can reference when player leaves trash can range
             trashCanToInteractWith = null;
-            pickUpButton.interactable = false; // Disable button
+            ResetPickUpButton();
         }
+        
     }
 
     void OnButtonClick()
     {
         if (itemToPickUp != null && inventory.Count < maxInventorySize)
         {
-            // Player clicks button to pick up an item
+            // Player clicks button to pick up regular item
             PickUpItem();
         }
         else if (trashCanToInteractWith != null)
@@ -65,9 +67,25 @@ public class ItemPickup : MonoBehaviour
         }
     }
 
+    
+    void ResetPickUpButton()
+    {
+        if (itemToPickUp != null || trashCanToInteractWith != null)
+        {
+            // Enable button when player is near an item or trashcan
+            pickUpButton.interactable = true;
+            Debug.Log("Button re-enabled for item or trash can interaction.");
+        }
+        else
+        {
+            // Disable button if no interactable object is in range
+            pickUpButton.interactable = false;
+            Debug.Log("Button disabled. No interactable object in range.");
+        }
+    }
     void PickUpItem()
     {
-        // Only pick up item if it's available and inventory is not full
+        // Regular item pickup logic
         if (itemToPickUp != null && inventory.Count < maxInventorySize)
         {
             Item itemComponent = itemToPickUp.GetComponent<Item>(); // Get item data
@@ -79,6 +97,8 @@ public class ItemPickup : MonoBehaviour
 
                 itemToPickUp.SetActive(false); // Deactivate the item
                 pickUpButton.interactable = false; // Disable button
+
+                ResetPickUpButton();
             }
         }
     }
@@ -102,8 +122,7 @@ public class ItemPickup : MonoBehaviour
                 itemToStore.SetActive(false);
                 pickUpButton.interactable = false; // Disable button
 
-                pickUpButton.interactable = true;
-
+                ResetPickUpButton() ;
             }
         }
     }

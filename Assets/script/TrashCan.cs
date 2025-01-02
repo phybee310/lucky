@@ -1,14 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using TMPro;
 
 public class TrashCan : MonoBehaviour
 {
     public enum TrashCanType { Red, Yellow, Green, Blue }
-    public TrashCanType trashCanType; // Set in Inspector
+    public TrashCanType trashCanType;
 
-    public static int globalScore = 0; // Total score from all trash cans
-    
+    public static int globalScore = 0;
 
+    public GameObject feedbackPanel;
+    public TextMeshProUGUI feedbackText;
 
     private readonly Dictionary<TrashCanType, List<string>> validItems = new Dictionary<TrashCanType, List<string>>
     {
@@ -26,34 +29,49 @@ public class TrashCan : MonoBehaviour
         { "carpet", 15 }, { "chair", 15 }, { "plastic bag", 15 }
     };
 
-    private readonly Dictionary<string, int> penaltyScores = new Dictionary<string, int>
+    private WinningPanelManager winningPanelManager;
+
+    private void Start()
     {
-        { "chemical", -15 }, { "plaster", -15 }, { "battery", -15 },
-        { "tin", -1 }, { "glass", -1 }, { "newspaper", -1 }, { "bottle", -1 },
-        { "eggshell", -5 }, { "fishbone", -5 }, { "vegetable", -5 },
-        { "carpet", -10 }, { "chair", -10 }, { "plastic bag", -10 }
-    };
+        feedbackPanel?.SetActive(false);
+        winningPanelManager = FindFirstObjectByType<WinningPanelManager>();
+    }
 
     public void StoreItem(Item item)
     {
         if (item == null) return;
 
         string itemName = item.itemName;
+        bool isCorrect = validItems[trashCanType].Contains(itemName);
 
-        if (validItems[trashCanType].Contains(itemName)) // Correct item for this trash can
+        if (isCorrect)
         {
             globalScore += itemScores[itemName];
-            Debug.Log($"{itemName} correctly placed in {trashCanType} trash can. Total global score: {globalScore}");
+            ShowFeedback($"Correct! +{itemScores[itemName]} points.");
         }
-        else // Incorrect item for this trash can
+        else
         {
-            globalScore += penaltyScores[itemName];
-            Debug.Log($"{itemName} incorrectly placed in {trashCanType} trash can. Total global score: {globalScore}");
+            ShowFeedback("Incorrect item! No points awarded.");
         }
+
+        winningPanelManager?.OnItemPlacedInTrashCan();
     }
+
+    private void ShowFeedback(string message)
+    {
+        feedbackText.text = message;
+        feedbackPanel.SetActive(true);
+        Invoke(nameof(HideFeedback), 3f);
+    }
+
+    private void HideFeedback()
+    {
+        feedbackPanel?.SetActive(false);
+    }
+
     public static void ResetScore()
     {
-        globalScore = 0;  // Reset the global score to zero
+        globalScore = 0; // Reset the global score to zero
         Debug.Log("Global score reset to 0");
     }
 

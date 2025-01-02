@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Item
   - TrashCan
+  - BonusItem
   layers:
   - Default
   - TransparentFX

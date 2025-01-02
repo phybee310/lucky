@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 
-
 public class CountdownTimer : MonoBehaviour
 {
     public float startTime = 300f; // Set the countdown start time in seconds
@@ -11,7 +10,8 @@ public class CountdownTimer : MonoBehaviour
     private float currentTime;   // Keeps track of the remaining time
     private bool isTimerRunning; // Flag to control the timer
 
-    [SerializeField] private GameOverManager gameOverManager; // Reference to GameOverManager
+    [SerializeField] private WinningPanelManager winningPanelManager; // Reference to WinningPanelManager
+    private bool isGameOver = false;
 
     void Start()
     {
@@ -54,14 +54,30 @@ public class CountdownTimer : MonoBehaviour
     {
         Debug.Log("Timer has ended!");
 
-        // Show the Game Over panel
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(true); // Show the Game Over panel
-
-        // Call GameOverManager's method if the reference is set
-        if (gameOverManager != null)
+        // Trigger the end logic in WinningPanelManager
+        if (winningPanelManager != null && !isGameOver)
         {
-            gameOverManager.ShowGameOverPanel(); // This will show the Game Over panel through GameOverManager
+            isGameOver = true;
+            winningPanelManager.CheckWinCondition(); // Tell the WinningPanelManager to check the win condition
         }
+        else
+        {
+            Debug.LogError("WinningPanelManager reference is missing or the game is already over.");
+        }
+    }
+
+    public float GetElapsedTime()
+    {
+        return startTime - currentTime; // Return the time the player has used
+    }
+
+    public void StopTimer()
+    {
+        isTimerRunning = false; // Stop the timer
+    }
+
+    public void ResumeTimer()
+    {
+        isTimerRunning = true; // Resume the timer
     }
 }
