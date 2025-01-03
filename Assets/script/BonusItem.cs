@@ -4,7 +4,7 @@ using TMPro;
 public class BonusItem : MonoBehaviour
 {
     public int bonusPoints = 30; // Points awarded for picking up this item
-
+    public AudioSource audioPlayer;
     private Vector3 initialPosition;
 
     private void Start()
@@ -25,6 +25,7 @@ public class BonusItem : MonoBehaviour
         {
             // Automatically collect the item when the player collides
             CollectItem();
+            audioPlayer.Play();
         }
     }
 

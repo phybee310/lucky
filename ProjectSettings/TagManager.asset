@@ -11,7 +11,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayerLayer
   - Water
   - UI
   - SolidObjects
@@ -52,6 +52,9 @@ TagManager:
     locked: 0
   - name: character
     uniqueID: 135515901
+    locked: 0
+  - name: treebranch
+    uniqueID: 29932131
     locked: 0
   - name: walk behind
     uniqueID: 521392837

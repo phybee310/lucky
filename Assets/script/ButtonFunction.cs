@@ -20,10 +20,7 @@ public class ButtonFunction : MonoBehaviour
         SceneManager.LoadScene("about");
     }
 
-    public void Setting()
-    {
-        SceneManager.LoadScene("setting");
-    }
+    
 
     public void Storyline()
     {

@@ -1,13 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed; // To adjust character movement speed in the Inspector window.
-    private bool isMoving; // To identify whether the playable character is moving.
-    private Vector2 input;
+    public float moveSpeed = 5f; // Speed of the player's movement
+    private bool isMoving;
     private Animator animator;
     public LayerMask SolidObjectsLayer;
 
@@ -20,72 +19,98 @@ public class PlayerController : MonoBehaviour
     private readonly Vector2 minBounds = new Vector2(-22, -14);
     private readonly Vector2 maxBounds = new Vector2(22, 14);
 
+    private bool isPressingButton = false;
+    private Vector2 currentDirection;
+
     private void Awake()
     {
-        animator = GetComponent<Animator>(); // Gets the generic animator component.
+        animator = GetComponent<Animator>();
     }
 
-    public void Start()
+    private void Start()
     {
-        upButton.onClick.AddListener(() => OnMoveInput(Vector2.up));
-        downButton.onClick.AddListener(() => OnMoveInput(Vector2.down));
-        leftButton.onClick.AddListener(() => OnMoveInput(Vector2.left));
-        rightButton.onClick.AddListener(() => OnMoveInput(Vector2.right));
+        AddButtonListener(upButton, Vector2.up);
+        AddButtonListener(downButton, Vector2.down);
+        AddButtonListener(leftButton, Vector2.left);
+        AddButtonListener(rightButton, Vector2.right);
     }
 
-    public void Update()
+    private void Update()
+    {
+        if (isPressingButton)
+        {
+            TryMove(currentDirection);
+        }
+
+        animator.SetBool("isMoving", isMoving);
+    }
+
+    private void AddButtonListener(Button button, Vector2 direction)
+    {
+        EventTrigger trigger = button.gameObject.AddComponent<EventTrigger>();
+
+        // OnPointerDown event for continuous movement
+        var pointerDown = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
+        pointerDown.callback.AddListener((_) => OnButtonPress(direction));
+        trigger.triggers.Add(pointerDown);
+
+        // OnPointerUp event to stop movement
+        var pointerUp = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
+        pointerUp.callback.AddListener((_) => OnButtonRelease());
+        trigger.triggers.Add(pointerUp);
+    }
+
+    private void OnButtonPress(Vector2 direction)
+    {
+        isPressingButton = true;
+        currentDirection = direction;
+    }
+
+    private void OnButtonRelease()
+    {
+        isPressingButton = false;
+    }
+
+    private void TryMove(Vector2 direction)
     {
         if (!isMoving)
         {
-            input.x = Input.GetAxisRaw("Horizontal"); // Horizontal movement is stored as input.x.
-            input.y = Input.GetAxisRaw("Vertical"); // Vertical movement is stored as input.y.
+            animator.SetFloat("moveX", direction.x);
+            animator.SetFloat("moveY", direction.y);
 
-            if (input.x != 0) input.y = 0; // Prevent diagonal movement.
+            var targetPos = transform.position + (Vector3)direction;
 
-            if (input != Vector2.zero) // Check for movement input.
+            // Check if the player can move to the target position
+            if (isWithinBounds(targetPos))
             {
-                animator.SetFloat("moveX", input.x);
-                animator.SetFloat("moveY", input.y);
-
-                var targetPos = transform.position;
-                targetPos.x += input.x;
-                targetPos.y += input.y;
-
-                // Check bounds and walkability before moving
-                if (isWithinBounds(targetPos) && isWalkable(targetPos))
+                if (isWalkable(targetPos))
                 {
                     StartCoroutine(Move(targetPos));
                 }
+                else
+                {
+                    HandleCollision(direction);
+                }
             }
         }
-        animator.SetBool("isMoving", isMoving);
-    }
-
-    private void OnMoveInput(Vector2 direction)
-    {
-        if (!isMoving)
-        {
-            input = direction;
-            animator.SetFloat("moveX", input.x);
-            animator.SetFloat("moveY", input.y);
-
-            var targetPos = transform.position;
-            targetPos.x += input.x;
-            targetPos.y += input.y;
-
-            // Check bounds and walkability before moving
-            if (isWithinBounds(targetPos) && isWalkable(targetPos))
-            {
-                StartCoroutine(Move(targetPos));
-            }
-        }
-        animator.SetBool("isMoving", isMoving);
     }
 
     private bool isWalkable(Vector3 targetPos)
     {
-        return Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjectsLayer) == null;
+        CapsuleCollider2D capsuleCollider = GetComponent<CapsuleCollider2D>();
+        if (capsuleCollider == null)
+        {
+            Debug.LogWarning("CapsuleCollider2D not found on player.");
+            return false;
+        }
+
+        Vector2 size = capsuleCollider.size; // Width and height of the capsule
+        CapsuleDirection2D direction = capsuleCollider.direction; // Horizontal or Vertical
+
+        // Check for overlap with the capsule shape
+        return Physics2D.OverlapCapsule(targetPos, size, direction, 0f, SolidObjectsLayer) == null;
     }
+
 
     private bool isWithinBounds(Vector3 targetPos)
     {
@@ -93,16 +118,39 @@ public class PlayerController : MonoBehaviour
                targetPos.y >= minBounds.y && targetPos.y <= maxBounds.y;
     }
 
-    IEnumerator Move(Vector3 targetPos)
+    private IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
+
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        transform.position = targetPos;
 
+        transform.position = targetPos;
         isMoving = false;
+    }
+
+    private void HandleCollision(Vector2 direction)
+    {
+        // Adjust movement to slide along the obstacle
+        Vector2 adjustedDirection = Vector2.zero;
+
+        if (direction.x != 0) // Horizontal movement
+        {
+            adjustedDirection = new Vector2(0, direction.y);
+        }
+        else if (direction.y != 0) // Vertical movement
+        {
+            adjustedDirection = new Vector2(direction.x, 0);
+        }
+
+        var adjustedTargetPos = transform.position + (Vector3)adjustedDirection;
+
+        if (isWalkable(adjustedTargetPos))
+        {
+            StartCoroutine(Move(adjustedTargetPos));
+        }
     }
 }
